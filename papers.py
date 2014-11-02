@@ -51,27 +51,35 @@ def decide(input_file, watchlist_file, countries_file):
         if "from" in item.keys() and "home" in item.keys():
             from_country = item["from"]["country"].upper()
             home_country = item["home"]["country"].upper()
+
             #Check if the country where the visitor "came from" is medical_advisory
             if from_country != "" and countries[from_country]["medical_advisory"]== "1":
                 decisions += ["Quarantine"]
+
             #Check if the country where the visitor "via" is medical_advisory
             elif via_country != "" and countries[via_country]["medical_advisory"] == "1":
                 decisions += ["Quarantine"]
+
             #uses the not_valid_passport method created to check if all the required info is in the passport
             elif not valid_passport_info(item):
                 decisions += ["Reject"]
+
             #Check if the from_country is in the country file
             elif not from_country in countries.keys():
                 decisions += ["Reject"]
+
             #Use check_watchlist method created to check if the person is on the watchlist
             elif not check_watchlist(item, watch_list):
                 decisions += ["Secondary"]
+
             #check if the person's home country is KAN and is he/she is returning home, accept
             elif home_country.upper() == "KAN" and item["entry_reason"].upper() == "RETURNING":
                 decisions += ["Accept"]
+
             #check if the person's visa or via visa is valid
             elif transit or item["entry_reason"].upper() == "VISIT":
                 decisions += [check_visa(item, countries[from_country], transit)]
+
             #vister is permitted to enter the country if he/she passes all the checked criteria
             else:
                 decisions += ["Accept"]

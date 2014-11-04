@@ -53,22 +53,22 @@ def decide(input_file, watchlist_file, countries_file):
             home_country = item["home"]["country"].upper()
 
             #Check if the country where the visitor "came from" is medical_advisory
-            if from_country != "" and countries[from_country]["medical_advisory"]== "1":
+            if from_country != "" and countries[from_country]["medical_advisory"] == "1":
                 decisions += ["Quarantine"]
 
             #Check if the country where the visitor "via" is medical_advisory
             elif via_country != "" and countries[via_country]["medical_advisory"] == "1":
                 decisions += ["Quarantine"]
 
-            #uses the not_valid_passport method created to check if all the required info is in the passport
+            #uses the valid_passport_info function created to check if all the required info is in the passport
             elif not valid_passport_info(item):
                 decisions += ["Reject"]
 
-            #Check if the from_country is in the country file
-            elif not from_country in countries.keys():
-                decisions += ["Reject"]
+            #Check if the from_country is in the country file - not needed?
+            #elif not from_country in countries.keys():
+            #    decisions += ["Reject"]
 
-            #Use check_watchlist method created to check if the person is on the watchlist
+            #Use check_watchlist function created to check if the person is on the watchlist
             elif not check_watchlist(item, watch_list):
                 decisions += ["Secondary"]
 
@@ -80,20 +80,57 @@ def decide(input_file, watchlist_file, countries_file):
             elif transit or item["entry_reason"].upper() == "VISIT":
                 decisions += [check_visa(item, countries[from_country], transit)]
 
-            #vister is permitted to enter the country if he/she passes all the checked criteria
+            #vistor is permitted to enter the country if he/she passes all the checked criteria
             else:
                 decisions += ["Accept"]
         else:
             decisions += ["Reject"]
     return decisions
 
+
 #A method used to check if the person is on the watchlist
+def check_watchlist(passport_info, watch_list):
+    for suspect in watch_list:
+        if passport_info["first_name"].upper() == suspect["first_name"].upper() and\
+                passport_info["last_name"].upper() == suspect["last_name"].upper():
+            return False
+        elif passport_info["passport"] == suspect["passport"]:
+            return False
+    return True
 
 
 #A method used to check if the person has the valid visa to enter
+def check_visa(passport_info, country, transit):
+    now = datetime.datetime.now()
+    if "visa" not in passport_info.keys():
+        return "Reject"
+    if country["visitor_visa_required"] == "1" or transit and country["transit_visa_required"] == "1":
+        visa_time_valid = (now.year - int(passport_info["visa"]["date"][2:4])) * 365 + \
+            (now.month - int(passport_info["visa"]["date"][5:7])) * 30 + \
+            (now.day - int(passport_info["visa"]["date"][8:10]))
+        if not valid_date_format(passport_info["visa"]["date"]):
+            return "Reject"
+        elif visa_time_valid < 730:
+            return "Reject"
+    return "Accept"
 
 
 #To check if the person's passport has all the info needed for entrance
+def valid_passport_info(passport_info):
+    valid = True
+    required_info = ["home", "first_name", "last_name", "passport", "entry_reason", "from", "birth_date"]
+    for item in required_info:
+        if not item in passport_info.keys():
+            valid = False
+        elif not "country" in passport_info["home"].keys() or not "city" in passport_info["from"].keys() or \
+                not "region" in passport_info["home"].keys():
+            valid = False
+        elif not "country" in passport_info["from"].keys() or not "city" in passport_info["from"].keys() or \
+                not "region" in passport_info["from"].keys():
+            valid = False
+        elif not valid_date_format(passport_info["birth_date"]):
+            valid = False
+        return valid_passport_format(passport_info["passport"]) and valid
 
 
 def valid_passport_format(passport_number):
@@ -121,4 +158,3 @@ def valid_date_format(date_string):
         return True
     except ValueError:
         return False
-

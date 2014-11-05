@@ -110,8 +110,8 @@ def check_visa(entry_record, country, transit):
     #check if visitor visa required, or if traveller is in transit
     if country["visitor_visa_required"] == "1" or transit and country["transit_visa_required"] == "1":
         #compute whether the visa time is valid (visa cannot be older than 2 years)
-        visa_time_valid = (now.year - int(entry_record["visa"]["date"][2:4]))*365 +\
-                      (now.month - int(entry_record["visa"]["date"][5:7]))*30 +\
+        visa_time_valid = (now.year - int(entry_record["visa"]["date"][2:4])) * 365 + \
+                      (now.month - int(entry_record["visa"]["date"][5:7])) * 30 + \
                       (now.day - int(entry_record["visa"]["date"][8:10]))
         if not valid_date_format(entry_record["visa"]["date"]):
             return "Reject"
@@ -127,10 +127,10 @@ def valid_entry_record(entry_record):
     for item in required_info:
         if not item in entry_record.keys():
             valid = False
-    if not "country" in entry_record["home"].keys() or not "city" in entry_record["home"].keys() or\
+    if not "country" in entry_record["home"].keys() or not "city" in entry_record["home"].keys() or \
             not "region" in entry_record["home"].keys():
         valid = False
-    elif not "country" in entry_record["from"].keys() or not "city" in entry_record["from"].keys() or\
+    elif not "country" in entry_record["from"].keys() or not "city" in entry_record["from"].keys() or \
             not "region" in entry_record["from"].keys():
         valid = False
     elif not valid_date_format(entry_record["birth_date"]):

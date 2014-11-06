@@ -25,13 +25,13 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
-    #Open all the json files and load their information into dictionaries and lists.
-    json_countries_data = open(countries_file)
-    json_watchlist_data = open(watchlist_file)
-    json_entries_data = open(input_file)
-    countries = json.load(json_countries_data)    
-    watch_list = json.load(json_watchlist_data)
-    entries = json.load(json_entries_data)
+    #Open the json files and load their information into dictionaries and lists.
+    with open(countries_file) as json_countries_data, \
+            open(watchlist_file) as json_watchlist_data, \
+            open(input_file) as json_entries_data:
+        countries = json.load(json_countries_data)
+        watch_list = json.load(json_watchlist_data)
+        entries = json.load(json_entries_data)
     
     #the variable "decisions" is the final result which this method returns
     decisions = []
@@ -85,9 +85,6 @@ def decide(input_file, watchlist_file, countries_file):
                 decisions += ["Accept"]
         else:
             decisions += ["Reject"]
-    json_countries_data.close()
-    json_watchlist_data.close()
-    json_entries_data.close()
     return decisions
 
 
@@ -111,8 +108,8 @@ def check_visa(entry_record, country, transit):
     if country["visitor_visa_required"] == "1" or transit and country["transit_visa_required"] == "1":
         #compute whether the visa time is valid (visa cannot be older than 2 years)
         visa_time_valid = (now.year - int(entry_record["visa"]["date"][2:4])) * 365 + \
-                      (now.month - int(entry_record["visa"]["date"][5:7])) * 30 + \
-                      (now.day - int(entry_record["visa"]["date"][8:10]))
+            (now.month - int(entry_record["visa"]["date"][5:7])) * 30 + \
+            (now.day - int(entry_record["visa"]["date"][8:10]))
         if not valid_date_format(entry_record["visa"]["date"]):
             return "Reject"
         elif visa_time_valid > 730:

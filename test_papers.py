@@ -2,13 +2,13 @@
 
 """ Module to test papers.py  """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
+__author__ = 'Amy Kwan, Jessica Mann, Susan Sim'
+__email__ = "amykwan.cma@gmail.com, jessmann74@gmail.com, ses@drsusansim.org"
 
-__copyright__ = "2014 Susan Sim"
+__copyright__ = "2014 AKJMSM"
 __license__ = "MIT License"
 
-__status__ = "Prototype"
+__status__ = "v1"
 
 # imports one per line
 import pytest

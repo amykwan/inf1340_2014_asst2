@@ -6,7 +6,7 @@ __email__ = "amykwan.cma@gmail.com, jessmann74@gmail.com, ses@drsusansim.org"
 __copyright__ = "2014 AKJMSM"
 __license__ = "MIT License"
 
-__status__ = "Prototype"
+__status__ = "v5"
 
 # imports one per line
 import re
@@ -32,7 +32,7 @@ def decide(input_file, watchlist_file, countries_file):
         countries = json.load(json_countries_data)
         watch_list = json.load(json_watchlist_data)
         entries = json.load(json_entries_data)
-    
+
     #the variable "decisions" is the final result which this method returns
     decisions = []
     #loop over all the entries in the list that come from input_file
@@ -69,7 +69,7 @@ def decide(input_file, watchlist_file, countries_file):
             #    decisions += ["Reject"]
 
             #Use check_watchlist function created to check if the person is on the watchlist
-            elif not check_watchlist(item, watch_list):
+            elif check_watchlist(item, watch_list):
                 decisions += ["Secondary"]
 
             #check if the person's home country is KAN and is he/she is returning home, accept
@@ -90,17 +90,31 @@ def decide(input_file, watchlist_file, countries_file):
 
 #A function used to check if the person is on the watchlist
 def check_watchlist(entry_record, watch_list):
+    """
+    Checks whether a traveller is on the watchlist
+    :param entry_record: The name of a JSON formatted file that contains all people's entry record information
+    :param watch_list: The name of a JSON formatted file that contains names and passport numbers on a watchlist
+    :return: Boolean. Returns "True" if they are on the watchlist and "False" if they are not on the watchlist
+    """
     for suspect in watch_list:
         if entry_record["first_name"].upper() == suspect["first_name"].upper() and \
            entry_record["last_name"].upper() == suspect["last_name"].upper():
-            return False
+            return True
         elif entry_record["passport"] == suspect["passport"]:
-            return False
-    return True
+            return True
+    return False
 
 
 #A function used to check if the person has the valid visa to enter
 def check_visa(entry_record, country, transit):
+    """
+    A function to check if a traveller has a valid visa.
+    :param entry_record: The name of a JSON formatted file that contains traveller entry record information
+    :param country: A string containing the country name a traveller is from in that traveller's entry
+        record as calculated in the "decide' function
+    :param transit: A Boolean, either True or False, as calculated in the "decide" function
+    :return: A string, either "Reject" or "Accept"
+    """
     now = datetime.datetime.now()
     if "visa" not in entry_record.keys():
             return "Reject"
@@ -119,6 +133,12 @@ def check_visa(entry_record, country, transit):
 
 #A function used to check if the person's passport has all the info needed for entrance
 def valid_entry_record(entry_record):
+    """
+    A function to check if a traveller's entry record has all the information needed for entrance.
+    :param entry_record: The name of a JSON formatted file that contains traveller passport information (e.g.,
+        number, name, birth date, etc.)
+    :return: Boolean; True if the format is valid, False otherwise
+    """
     valid = True
     required_info = ["home", "first_name", "last_name", "passport", "entry_reason", "from", "birth_date"]
     for item in required_info:

@@ -32,36 +32,35 @@ def test_quarantine():
     assert decide("test_JSON_files/03-qyiytransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
     assert decide("test_JSON_files/04-qyiytransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    """assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/05-qyiytransitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/06-qyiytransitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/07-qyiyvisitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/08-qyiyvisitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/09-qyiyvisitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/10-qyiyvisitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/11-qyiyvisitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/12-qyiyvisitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/13-qyiyfromvnavvnahywn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    """assert decide("test_JSON_files/14-qyintransitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/15-qyintransitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/16-qyintransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/17-qyintransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/18-qyintransitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/19-qyintransitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/20-qyinvisitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/21-qyinvisitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/22-qyinvisitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/23-qyinvisitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/24-qyinvisitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/25-qyinvisitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/26-qyinfromvnavvnahywn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
 
 def test_secondary():
@@ -71,13 +70,13 @@ def test_secondary():
     Included cases: whether they are in transit or visiting with valid or invalid visas, or
     in transit or visiting from a country with no visa needed.
     """"""
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/27-qniytransitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/29-qniytransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/31-qniytransitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Secondary"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/33-qniyvisitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/35-qniyvisitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/37-qniyvisitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Secondary"]
 
 
 def test_accept():
@@ -87,13 +86,12 @@ def test_accept():
     Included cases: whether they are in transit or visiting with visas needed and valid,
     in transit or visiting with no visa needed, or from KAN.
     """"""
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Accept"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Accept"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Accept"]
+    assert decide("test_JSON_files/28-qniytransitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Accept"]
+    assert decide("test_JSON_files/32-qniytransitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Accept"]
+    assert decide("test_JSON_files/34-qniyvisitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Accept"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Accept"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Accept"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Accept"]
+    assert decide("test_JSON_files/38-qniyvisitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Accept"]
+    assert decide("test_JSON_files/39-qniyfromvnavvnahywn.json", "watchlist.json", "countries.json") == ["Accept"]
 
 
 def test_reject():
@@ -104,25 +102,25 @@ def test_reject():
     visiting or from KAN, whether or not their visa is valid, and whether or not they are on a watchlist.
     Also includes rejection for complete entry records where visa is required but invalid or not present.
     """"""
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/30-qniytransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/36-qniyvisitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/40-qnintransitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/41-qnintransitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/42-qnintransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/43-qnintransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/44-qnintransitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/45-qnintransitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/46-qninvisitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
 
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/47-qninvisitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/48-qninvisitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/49-qninvisitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
 
-    assert decide(test_JSON_files/"xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
-    assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide(test_JSON_files/"50-qninvisitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/51-qninvisitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/52-qninfromvnavvnahywn.json", "watchlist.json", "countries.json") == ["Reject"]
 
     assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/xxx.json", "watchlist.json", "countries.json") == ["Reject"]

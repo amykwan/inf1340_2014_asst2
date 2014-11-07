@@ -38,22 +38,8 @@ def decide(input_file, watchlist_file, countries_file):
     #loop over all the entries in the list that come from input_file
     #form of loop -> access every elements inside a list/tuple of sting in order
     for item in entries:
-        #load the countries' names and simplify the program
-        #if the customer is in transit, gather the transit related information
-        via_country = ""
-        if "via" in item.keys():
-            via_country = item["via"]["country"].upper()
-        if item["entry_reason"].upper() == "TRANSIT":
-            transit = True
-        else:
-            transit = False
-        
-        if "from" in item.keys() and "home" in item.keys():
-            from_country = item["from"]["country"].upper()
-            home_country = item["home"]["country"].upper()
-
             #check if customer meets quarantine criteria
-            if is_quarantine(from_country, via_country, countries):
+            if is_quarantine(item, countries):
                 decisions += ["Quarantine"]
             #check if customer meets reject criteria
             elif is_reject(item, countries):
@@ -67,10 +53,15 @@ def decide(input_file, watchlist_file, countries_file):
     return decisions
 
 
-def is_quarantine(from_str, via_str, countries_dict):
-    if from_str != "" and countries_dict[from_str]["medical_advisory"] != "":
+def is_quarantine(entry_record, countries_dict):
+    from_country = entry_record["from"]["country"].upper()
+    via_country = ""
+    if "via" in entry_record.keys():
+        via_country = entry_record["via"]["country"].upper()
+
+    if from_country != "" and countries_dict[from_country]["medical_advisory"] != "":
         return True
-    elif via_str != "" and countries_dict[via_str]["medical_advisory"] != "":
+    elif via_country != "" and countries_dict[via_country]["medical_advisory"] != "":
         return True
     else:
         return False

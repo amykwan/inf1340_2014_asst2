@@ -44,10 +44,10 @@ def test_quarantine():
     assert decide("test_JSON_files/12-qyiyvisitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
     assert decide("test_JSON_files/13-qyiyfromvnavvnahywn.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    """assert decide("test_JSON_files/14-qyintransitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_JSON_files/14-qyintransitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
     assert decide("test_JSON_files/15-qyintransitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
-    assert decide("test_JSON_files/16-qyintransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    """assert decide("test_JSON_files/16-qyintransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
     assert decide("test_JSON_files/17-qyintransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Quarantine"]
     assert decide("test_JSON_files/18-qyintransitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Quarantine"]
 

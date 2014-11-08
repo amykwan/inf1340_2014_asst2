@@ -21,6 +21,7 @@ def test_basic():
     assert decide("test_quarantine.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
 
+# add functions for other tests
 def test_quarantine():
     """
     Inputs a watchlist JSON file, a countries JSON file, and a JSON file with entry records of
@@ -98,7 +99,6 @@ def test_accept():
     assert decide("test_JSON_files/39-qniyfromvnavvnahywn.json", "watchlist.json", "countries.json") == ["Accept"] #reject when should be accept; returning too many items
 
 
-
 def test_reject():
     """
     Inputs a watchlist JSON file, a countries JSON file, and a JSON file with entry records of
@@ -157,10 +157,6 @@ def test_reject():
         # last_name, home country, from country, visa date, visa code
 
 
-
 def test_files():
     with pytest.raises(FileNotFoundError):
         decide("test_returning_citizen.json", "", "countries.json")
-
-# add functions for other tests
-

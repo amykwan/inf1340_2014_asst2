@@ -8,7 +8,7 @@ __email__ = "amykwan.cma@gmail.com, jessmann74@gmail.com, ses@drsusansim.org"
 __copyright__ = "2014 AKJMSM"
 __license__ = "MIT License"
 
-__status__ = "v2"
+__status__ = "v3"
 
 # imports one per line
 import pytest
@@ -21,7 +21,6 @@ def test_basic():
     assert decide("test_quarantine.json", "watchlist.json", "countries.json") == ["Quarantine"]
 
 
-# add functions for other tests
 def test_quarantine():
     """
     Inputs a watchlist JSON file, a countries JSON file, and a JSON file with entry records of
@@ -109,23 +108,22 @@ def test_reject():
     and whether or not they are on a watchlist.
 
     Also includes tests for entry records where birthdays are after "today" or earlier than
-    120 years ago, missing keys and/or values, upper and lower case tests, incorrect types (numbers or symbols)
-    in alpha format strings, invalidly formatted dates or passport numbers,
-    and countries that aren't on the country list.
+    120 years ago, missing keys and/or values, upper and lower case tests,
+    invalidly formatted dates or passport numbers, and countries that aren't on the country list.
     """
     assert decide("test_JSON_files/29-qniytransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/30-qniytransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/36-qniyvisitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/40-qnintransitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/41-qnintransitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
-    #assert decide("test_JSON_files/42-qnintransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Reject"] #not rejecting despite no visa and non-alpha characters in name
+    assert decide("test_JSON_files/42-qnintransitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/43-qnintransitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
 
     assert decide("test_JSON_files/44-qnintransitvnvvnahnwy.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/45-qnintransitvnvvnahnwn.json", "watchlist.json", "countries.json") == ["Reject"]
     #assert decide("test_JSON_files/46-qninvisitvyvvyhnwy.json", "watchlist.json", "countries.json") == ["Reject"] #not rejecting with an empty first name
 
-    #assert decide("test_JSON_files/47-qninvisitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Reject"]  #not rejecting with an incorrect passport number
+    assert decide("test_JSON_files/47-qninvisitvyvvyhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/48-qninvisitvyvvnhnwy.json", "watchlist.json", "countries.json") == ["Reject"]
     assert decide("test_JSON_files/49-qninvisitvyvvnhnwn.json", "watchlist.json", "countries.json") == ["Reject"]
 
@@ -139,10 +137,7 @@ def test_reject():
     assert decide("test_JSON_files/test_invalid_country.json", "watchlist.json", "countries.json") == ["Reject"]
 
     assert decide("test_JSON_files/test_lower_case.json", "watchlist.json", "countries.json") == ["Accept"]
-   # assert decide("test_JSON_files/test_upper_case.json", "watchlist.json", "countries.json") == ["Accept"] #throwing KeyError for "from"
-
-    #assert decide("test_JSON_files/test_numbers_symbols.json", "watchlist.json", "countries.json") == \
-        #["Reject", "Reject", "Reject", "Reject"] # it's accepting number and symbol entries for passport, first name, last name and entry reason
+    assert decide("test_JSON_files/test_upper_case.json", "watchlist.json", "countries.json") == ["Accept"]
 
     assert decide("test_JSON_files/test_missing_entry_pairs.json", "watchlist.json", "countries.json") == \
            ["Reject", "Reject", "Reject", "Reject", "Reject", "Reject", "Reject"]
@@ -159,9 +154,3 @@ def test_reject():
 def test_files():
     with pytest.raises(FileNotFoundError):
         decide("test_returning_citizen.json", "", "countries.json")
-
-
-
-
-args_str = "test_papers.py"
-pytest.cmdline.main(args_str.split(" "))

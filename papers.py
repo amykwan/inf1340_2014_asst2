@@ -10,24 +10,30 @@ __status__ = "v8"
 
 # imports one per line
 import re
-import os
 import datetime
 import json
 from datetime import date
+import os
 
 
 def decide(input_file, watchlist_file, countries_file):
     """
-    decides whether a traveller's entry into Kanadia should be accepted
-    :param input_file: name of a JSON formatted file that contains all people's entry record and passport
-        information (e.g., number, name, birth date, etc.) in alphanumeric format
-    :param watchlist_file: name of a JSON formatted file that contains names and passport numbers on a watchlist in
-        alphanumeric format
-    :param countries_file: name of a JSON formatted file that contains country data, such as whether
-        an entry or transit visa is required, and whether there is currently a medical advisory in alphanumeric format
-    :return: list of strings; possible values of strings are: "Quarantine", "Reject", "Secondary", and "Accept"
+    decides whether each traveller's entry into Kanadia should be accepted
+    :param input_file: name of a JSON formatted file that contains all people's
+        passport information (e.g., number, name, birth date, etc.)
+    :param watchlist_file: name of a JSON formatted file that contains names
+        and passport numbers on a watchlist
+    :param countries_file: name of a JSON formatted file that contains country
+        data, such as whether an entry or transit visa is required, and whether
+        there is currently a medical advisory
+    :return: list of strings; possible values of strings are: "Quarantine",
+        "Reject", "Secondary", and "Accept"
     """
-    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))) + "\\"
+
+    #enables test file to be executed in PyCharm
+    __location__ = "{0}\\".format(os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__))))
+
     #open the json files and load information into dictionaries and lists
     with open(__location__ + countries_file) as json_countries_data, \
             open(__location__ + watchlist_file) as json_watchlist_data, \
@@ -39,12 +45,9 @@ def decide(input_file, watchlist_file, countries_file):
     #the variable "decisions" is the final result which this method returns
     decisions = []
     #loop over all the entries in the list that come from input_file
-    #form of loop -> access every elements inside a list/tuple of string in order
     for item in entries:
             #check if traveller meets quarantine criteria
-            if is_valid_passport_for_quarantine(item, countries):
-                decisions += ["Reject"]
-            elif is_quarantine(item, countries):
+            if is_quarantine(item, countries):
                 decisions += ["Quarantine"]
             #check if traveller meets reject criteria
             elif is_reject(item, countries):
@@ -52,53 +55,38 @@ def decide(input_file, watchlist_file, countries_file):
             #check if traveller meets secondary criteria
             elif is_secondary(item, watch_list):
                 decisions += ["Secondary"]
-            #traveller is permitted to enter the country if he/she passes all the checked criteria
+            #permitted to enter country if passes all checked criteria
             else:
                 decisions += ["Accept"]
     return decisions
-
-
-def is_valid_passport_for_quarantine(entry_record, countries_dict):
-    """
-
-    :param entry_record:
-    :param countries_dict:
-    :return:
-    """
-    if not "home" in entry_record.keys() or not "from" in entry_record.keys():
-        return True
-    if not "country" in entry_record["home"].keys() or not "country" in entry_record["from"].keys():
-        return True
-
-    if not entry_record["home"]["country"].upper() in countries_dict.keys() and \
-            entry_record["home"]["country"].upper() != "KAN":
-        return True
-    elif not entry_record["from"]["country"].upper() in countries_dict.keys():
-        return True
-
-    return False
 
 
 def is_quarantine(entry_record, countries_dict):
     """
     checks whether traveller meets condition for quarantine
     :param entry_record: the traveller's entry record information
-    :param countries_dict: list of countries requiring a visa, and countries with medical advisories
-    :return: Boolean; Return True if the record meets quarantine criteria, False otherwise
+    :param countries_dict: list of countries requiring a visa,
+        and countries with medical advisories
+    :return: Boolean; Return True if the record meets quarantine
+        criteria, False otherwise
     """
 
     #check if "from" country is flagged for medical advisory
     if "from" in entry_record.keys():
         if "country" in entry_record["from"].keys():
             from_country = entry_record["from"]["country"].upper()
-            if countries_dict[from_country]["medical_advisory"] != "":
-                return True
+            if entry_record["from"]["country"].upper() \
+                    in countries_dict.keys():
+                if countries_dict[from_country]["medical_advisory"] != "":
+                    return True
+
     #check if "via" country is flagged for medical advisory
     if "via" in entry_record.keys():
         if "country" in entry_record["via"].keys():
             via_country = entry_record["via"]["country"].upper()
-            if countries_dict[via_country]["medical_advisory"] != "":
-                return True
+            if entry_record["via"]["country"].upper() in countries_dict.keys():
+                if countries_dict[via_country]["medical_advisory"] != "":
+                    return True
     else:
         return False
 
@@ -107,15 +95,17 @@ def is_reject(entry_record, country_dict):
     """
     checks whether traveller meets condition for rejection of entry
     :param entry_record: the traveller's entry record information
-    :param country_dict: list of countries requiring a visa, and countries with medical advisories
-    :return: Boolean; True if the record meets the reject criteria, False otherwise
+    :param country_dict: list of countries requiring a visa,
+        and countries with medical advisories
+    :return: Boolean; True if the record meets the reject
+        criteria, False otherwise
     """
+
     #check if entry record is incomplete
-    if not is_valid_entry_record(entry_record, country_dict):
+    if not is_valid_entry_record(entry_record):
         return True
     #check if "from" country is in the country file
     from_country = entry_record["from"]["country"].upper()
-
     if not from_country in country_dict.keys() and from_country != "KAN":
         return True
     #check if transit visa is required, if required, check if the visa is valid
@@ -139,9 +129,13 @@ def is_secondary(entry_record, watch_list):
     :param watch_list: names of travellers on the watch list
     :return: Boolean; True if the record is on the watchlist, False otherwise
     """
+
+    #checks the traveller's name against the watchlist
     for suspect in watch_list:
-        if entry_record["first_name"].upper() == suspect["first_name"].upper() \
-                and entry_record["last_name"].upper() == suspect["last_name"].upper():
+        if entry_record["first_name"].upper() \
+                == suspect["first_name"].upper() \
+                and entry_record["last_name"].upper() \
+                == suspect["last_name"].upper():
             return True
         elif entry_record["passport"] == suspect["passport"]:
             return True
@@ -151,72 +145,116 @@ def is_secondary(entry_record, watch_list):
 def is_valid_visa(entry_record):
     """
     checks whether traveller has a valid visa to enter
+    assumption: visa dates are based on issue date, not expiry date
     :param entry_record: the traveller's entry record information
-    :return: Boolean; False if visa entry not in record or if the visa is older than 2 years, True otherwise
+    :return: Boolean; False if visa entry not in record or if visa
+        is older than 2 years, True otherwise
     """
+
     #establish the current date
     now = datetime.datetime.now()
-    #check if traveller has a visa
+
+    #check whether traveller has a visa
     if "visa" not in entry_record.keys():
         return False
-
+    #checks whether visa date format and date range are correct
     if not valid_date_format(entry_record["visa"]["date"]):
         return False
 
-    #convert the visa date from str to datetime format
-    record_visa_date = datetime.date(int(entry_record["visa"]["date"][0:4]),
-                                     int(entry_record["visa"]["date"][5:7]),
-                                     int(entry_record["visa"]["date"][8:10]))
+    #convert the visa date to date/time format
+    record_visa_date = datetime.datetime.strptime(
+        entry_record["visa"]["date"], '%Y-%m-%d')
+
     #compute the earliest acceptable visa date
     earliest_issue_date = datetime.date(now.year-2, now.month, now.day)
 
     #compare the visa date to check if within 2 years
-    if record_visa_date > earliest_issue_date:
+    if datetime.date(record_visa_date.year, record_visa_date.month,
+                     record_visa_date.day) > earliest_issue_date:
         return True
     else:
         return False
 
 
-def is_valid_entry_record(entry_record, countries_dict):
+def is_valid_entry_record(entry_record):
     """
-    checks whether traveller's entry record has all the information needed for entrance
+    checks if traveller's entry record has all info needed for entrance
     :param entry_record: the traveller's entry record information
     :return: Boolean; True if the format is valid, False otherwise
     """
+
     #list of all the required info from the traveller's passport
-    required_info = ["home", "first_name", "last_name", "passport", "entry_reason", "from", "birth_date"]
-    #loop to check every item in the required info list is in the record entry
+    required_info = ["home", "first_name", "last_name", "passport",
+                     "entry_reason", "from", "birth_date"]
+    #list of all the required country information
+    required_country_info = ["city", "region", "country"]
+    #list of all the required visa information
+    required_visa_info = ["date", "code"]
+
+    #check every item in the required info list is in the record entry
     for item in required_info:
         if not item in entry_record.keys():
             return False
+        elif entry_record[item] == "":
+            return False
+        #check if information for "home" and "from" is complete
+        if item == "home" or item == "from":
+            for sub_item in required_country_info:
+                if not sub_item in entry_record[item].keys():
+                    return False
+                elif entry_record[item][sub_item] == "":
+                    return False
+
+    #checks for "via" information if this information is included
+    if "via" in entry_record.keys():
+        #check every sub_item in the required info list is in the record entry
+        for via_item in required_country_info:
+            if not via_item in entry_record["via"].keys():
+                return False
+            elif entry_record["via"][via_item] == "":
+                return False
+
+    #check for "visa" information if this information is included
+    if "visa" in entry_record.keys():
+        #check every sub_item in the required info list is in the record entry
+        for visa_item in required_visa_info:
+            if not visa_item in entry_record["visa"].keys():
+                return False
+            elif entry_record["visa"][visa_item] == "":
+                return False
+
     #check if the traveller's "home" information is complete
-    if not "country" in entry_record["home"].keys() or not "city" in entry_record["home"].keys() \
-            or not "region" in entry_record["home"].keys() or not entry_record["home"]["country"] != "":
+    if not "country" in entry_record["home"].keys() \
+            or not "city" in entry_record["home"].keys() \
+            or not "region" in entry_record["home"].keys():
         return False
     #check if the traveller's "from" information is complete
-    elif not "country" in entry_record["from"].keys() or not "city" in entry_record["from"].keys() \
-            or not "region" in entry_record["from"].keys()or not entry_record["from"]["country"] != "":
+    elif not "country" in entry_record["from"].keys() \
+            or not "city" in entry_record["from"].keys() \
+            or not "region" in entry_record["from"].keys():
         return False
     #check if traveller's birth date format is correct
-    elif not valid_date_format(entry_record["birth_date"])or not entry_record["birth_date"] != "":
+    elif not valid_date_format(entry_record["birth_date"]):
         return False
     #check if format of traveller's passport is correct
-    elif not valid_passport_format(entry_record["passport"])or not entry_record["passport"] != "":
+    elif not valid_passport_format(entry_record["passport"]):
         return False
     #if traveller has a visa, check if visa date format is complete
     elif "visa" in entry_record.keys():
-        if not valid_date_format(entry_record["visa"]["date"])or not entry_record["visa"]["date"] != "":
+        if not valid_date_format(entry_record["visa"]["date"]):
             return False
     return True
 
 
 def valid_passport_format(passport_number):
     """
-    checks whether a passport number is five sets of five alpha-number characters separated by dashes
+    checks whether a passport number is five sets of five
+        alpha-number characters separated by dashes
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
-    passport_format = re.compile('.{5}-.{5}-.{5}-.{5}-.{5}')
+
+    passport_format = re.compile('^.{5}-.{5}-.{5}-.{5}-.{5}$')
     if passport_format.match(passport_number):
         return True
     else:
@@ -226,22 +264,19 @@ def valid_passport_format(passport_number):
 def valid_date_format(date_string):
     """
     checks whether a date has the format YYYY-mm-dd in numbers
+    checks whether the date range is valid (i.e., no future dated dates,
+        birth date within 150 years)
     :param date_string: date to be checked
-    :return: Boolean True if the format is valid, False otherwise
+    :return: Boolean True if the format is valid, True if date range
+        is valid, False otherwise
     """
+
     try:
         time = datetime.datetime.strptime(date_string, '%Y-%m-%d')
-
-        if time.year > date.today().year:
+        if datetime.date(time.year, time.month, time.day) > date.today():
             return False
-        elif time.year == date.today().year and time.month > date.today().month:
+        if time.year < (date.today().year - 150):
             return False
-        elif time.year == date.today().year and time.month == date.today().month and time.day > date.today().day:
-            return False
-
-        if time.year < (date.today().year - 100):
-            return False
-
         return True
     except ValueError:
         return False

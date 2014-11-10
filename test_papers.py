@@ -125,6 +125,8 @@ def test_accept():
     Included cases: whether the traveller is in transit, or visiting with
     visa required and visa is valid, in transit or visiting with no visa
     required, or traveller is from KAN.
+
+    Also includes tests of fields with both upper and lower case values.
     """
     assert decide("test_JSON_files/28-qniytransitvyvvyhnwn.json",
                   "watchlist.json", "countries.json") == ["Accept"]
@@ -138,6 +140,11 @@ def test_accept():
     assert decide("test_JSON_files/39-qniyfromvnavvnahywn.json",
                   "watchlist.json", "countries.json") == ["Accept"]
 
+    assert decide("test_JSON_files/test_lower_case.json",
+                  "watchlist.json", "countries.json") == ["Accept"]
+    assert decide("test_JSON_files/test_upper_case.json",
+                  "watchlist.json", "countries.json") == ["Accept"]
+
 
 def test_reject():
     """
@@ -145,13 +152,13 @@ def test_reject():
     entry records of travellers who should all be rejected.
 
     Included cases: incomplete or incorrect entry records whether traveller is
-    in transit, visiting or from KAN; whether or not a visa is required but out
-    of date range, wrong code length or not present; and whether or not
+    in transit, visiting or from KAN; whether or not a visa is required but
+    out of date range, wrong code length or not present; and whether or not
     the traveller is on a the watchlist.
 
     Also includes tests for entry records where birthdays are after "today" or
-    earlier than 120 years ago, missing keys and/or values, upper and lower
-    case tests, invalidly formatted dates or passport numbers, and countries
+    earlier than 120 years ago, missing keys and/or values,
+    invalidly formatted dates or passport numbers, and countries
     that aren't on the country list.
     """
     assert decide("test_JSON_files/29-qniytransitvyvvnhnwy.json",
@@ -197,10 +204,6 @@ def test_reject():
     assert decide("test_JSON_files/test_invalid_country.json",
                   "watchlist.json", "countries.json") == ["Reject"]
 
-    assert decide("test_JSON_files/test_lower_case.json",
-                  "watchlist.json", "countries.json") == ["Accept"]
-    assert decide("test_JSON_files/test_upper_case.json",
-                  "watchlist.json", "countries.json") == ["Accept"]
 
     assert decide("test_JSON_files/test_missing_entry_pairs.json",
                   "watchlist.json", "countries.json") == ["Reject",
@@ -216,9 +219,9 @@ def test_reject():
                                                           "Reject", "Reject"]
 
     assert decide("test_JSON_files/test_missing_values.json",
-                  "watchlist.json", "countries.json") == ["Reject", "Reject",
+                  "watchlist.json", "countries.json") == ["Reject",
                                                           "Reject", "Reject",
-                                                          "Reject",  "Accept",
+                                                          "Reject", "Reject",
                                                           "Reject", "Reject",
                                                           "Reject", "Reject"]
 

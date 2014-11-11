@@ -207,7 +207,7 @@ def is_valid_entry_record(entry_record):
 
     #checks for "via" information if this information is included
     if "via" in entry_record.keys():
-        #check every sub_item in the required info list is in the record entry
+        #check every "via" item in required info list is in the record entry
         for via_item in required_country_info:
             if not via_item in entry_record["via"].keys():
                 return False
@@ -216,7 +216,7 @@ def is_valid_entry_record(entry_record):
 
     #check for "visa" information if this information is included
     if "visa" in entry_record.keys():
-        #check every sub_item in the required info list is in the record entry
+        #check every "visa" item in required info list is in the record entry
         for visa_item in required_visa_info:
             if not visa_item in entry_record["visa"].keys():
                 return False

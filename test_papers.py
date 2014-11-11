@@ -109,10 +109,10 @@ def test_secondary():
     Included cases: whether traveller is in transit or visiting with valid or
     invalid visa, or in transit or visiting from a country with no visa needed.
     """
-    #assert decide("test_JSON_files/test_27.json",
-     #             "watchlist.json", "countries.json") == ["Secondary"]
-    #assert decide("test_JSON_files/test_28.json",
-       #           "watchlist.json", "countries.json") == ["Reject"]
+    assert decide("test_JSON_files/test_27.json",
+                  "watchlist.json", "countries.json") == ["Secondary"]
+    assert decide("test_JSON_files/test_31.json",
+                  "watchlist.json", "countries.json") == ["Reject"]
 
     assert decide("test_JSON_files/test_33.json",
                   "watchlist.json", "countries.json") == ["Secondary"]
